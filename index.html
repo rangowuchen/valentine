@@ -153,7 +153,7 @@
             },
             // 加载方法
             mounted() {
-                // this.saveImg();
+                // this.count();
                 this.autoPlayMusic();
                 this.audioAutoPlay();
                 this.qrcode();
@@ -172,13 +172,25 @@
                         text: window.location.href
                     });
                 },
-                // saveImg() {
-                //     let table = document.getElementById("saveToImg");
-                //     html2canvas(document.getElementById("saveToImg"), { useCORS: true }).then(canvas => {
-                //         this.imgSrc = canvas.toDataURL('image/png');
-                //         document.getElementById('haha').style.display = 'block';
-                //     })
-                // },
+                saveImg() {
+                    let table = document.getElementById("saveToImg");
+                    var copyDom = $("#saveToImg");
+                    var width = copyDom.offsetWidth;//dom宽
+                    var height = copyDom.offsetHeight;//dom高
+                    var scale = 2;//放大倍数
+                    html2canvas(document.getElementById("saveToImg"), {
+                        width: 300,
+                        height: 300,
+                        backgroundColor: null,
+                        useCORS: true, // 允许图片跨域
+                        taintTest: true, // 在渲染前测试图片
+                        timeout: 500 // 加载延时
+                    }).then(canvas => {
+                        document.body.appendChild(canvas);
+                        this.imgSrc = canvas.toDataURL('image/png');
+                        document.getElementById('haha').style.display = 'block';
+                    })
+                },
                 count() {
                     axios
                         .get('http://mp.xbandclub.com/spring/count')
@@ -234,20 +246,24 @@
                         } else {
                             $('.arrow').show();
                         }
-                        if (this.curPage == 4) {
-                            let table = document.getElementById("saveToImg");
-                            html2canvas(document.getElementById("saveToImg")).then(canvas => {
-                                this.imgSrc = canvas.toDataURL('image/png');
-                                console.log(canvas.toDataURL('image/png'))
-                                document.getElementById('haha').style.display = 'block';
-                            })
-                        }
                         this.canTouch = false;
                         let that = this;
                         setTimeout(function () {
                             that.canTouch = true;
                             $('.page' + (that.curPage - 1) + ', .page' + (that.curPage + 1)).addClass('hide');
                         }, 1000);
+                        if (this.curPage == 4) {
+                            // setTimeout(() => {
+                            //     let table = document.getElementById("saveToImg");
+                            //     html2canvas(document.getElementById("saveToImg")).then(canvas => {
+                            //         that.imgSrc = canvas.toDataURL('image/png');
+                            //         console.log(canvas.toDataURL('image/png'))
+                            //         document.getElementById('haha').style.display = 'block';
+                            //     })
+                            //     alert(11)
+                            // }, 5000);
+                            this.count();
+                        }
                     }
                 },
                 // 背景音乐

@@ -64,6 +64,7 @@
     left: 3.4rem;
     width: 3.54rem;
     height: 2.35rem;
+    z-index: 999;
 }
 .page4 .againMind{
     position: absolute;
@@ -72,6 +73,7 @@
     width: 2.98rem;
     height: 2.03rem;
     display: none;
+    z-index: 999;
 }
 .page4 .moreMind{
     position: absolute;
@@ -80,6 +82,7 @@
     width: 3.3rem;
     height: 1.3rem;
     display: none;
+    z-index: 999;
 }
 .page4 .longEnter{
     width: 0.4rem;
@@ -91,6 +94,7 @@
     right: 0.2rem;
     top: 2rem;
     text-align: center;
+    z-index: 999;
 }
 .page4 .applyPrize{
     position: absolute;
@@ -98,6 +102,7 @@
     left: 1rem;
     width: 3.14rem;
     height: 1.24rem;
+    z-index: 999;
 }
 .page4 div{
     background: url('../images/4.png') no-repeat;
