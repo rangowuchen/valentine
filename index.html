@@ -17,10 +17,6 @@
     <title>H5-test</title>
     <link href="css/index.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet" />
-    <script src="js/vue.js"></script>
-    <script src="js/axios.min.js"></script>
-    <script type="text/javascript" src="js/qrcode.min.js"></script>
-    <script type="text/javascript" src="js/html2canvas.min.js"></script>
     <style>
         .haha {
             font-family: cursive;
@@ -102,9 +98,11 @@
         </div>
 
     </div>
-
-    <!-- <div class="arrow" @click="nextBtn()">∧</div> -->
-
+    <script src="js/vue.js"></script>
+    <script src="js/axios.min.js"></script>
+    <script type="text/javascript" src="js/qrcode.min.js"></script>
+    <script type="text/javascript" src="js/html2canvas-0.4.1.js"></script>
+    <!-- <script src="https://cdn.bootcss.com/html2canvas/0.4.1/html2canvas.js"></script> -->
     <script type="text/javascript" src="https://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
     <script type="text/javascript">
         // loading
@@ -173,23 +171,36 @@
                     });
                 },
                 saveImg() {
+                    let that = this;
                     let table = document.getElementById("saveToImg");
-                    var copyDom = $("#saveToImg");
-                    var width = copyDom.offsetWidth;//dom宽
-                    var height = copyDom.offsetHeight;//dom高
-                    var scale = 2;//放大倍数
-                    html2canvas(document.getElementById("saveToImg"), {
-                        width: 300,
-                        height: 300,
-                        // backgroundColor: null,
-                        useCORS: true, // 允许图片跨域
-                        taintTest: true, // 在渲染前测试图片
-                        timeout: 500 // 加载延时
-                    }).then(canvas => {
-                        document.body.appendChild(canvas);
-                        this.imgSrc = canvas.toDataURL('image/png');
-                        document.getElementById('haha').style.display = 'block';
-                    })
+                    // var copyDom = $("#saveToImg");
+                    // var width = copyDom.offsetWidth;//dom宽
+                    // var height = copyDom.offsetHeight;//dom高
+                    // var scale = 2;//放大倍数
+                    // html2canvas(document.getElementById("saveToImg"), {
+                    //     // width: 300,
+                    //     // height: 300,
+                    //     // // backgroundColor: null,
+                    //     // useCORS: true, // 允许图片跨域
+                    //     // taintTest: true, // 在渲染前测试图片
+                    //     // timeout: 15000 // 加载延时
+                    // }).then(canvas => {
+                    //     document.body.appendChild(canvas);
+                    //     this.imgSrc = canvas.toDataURL('image/png');
+                    //     document.getElementById('haha').style.display = 'block';
+                    // })
+                    html2canvas(table, {
+                        // 页面高度  
+                        height: 1000,
+                        // 页面宽度
+                        width: 400,
+                        onrendered: function (canvas) {
+                            // 生成图片的地址
+                            that.imgSrc = canvas.toDataURL('image/png');
+                            console.log(canvas.toDataURL('image/png'))
+                            document.getElementById('haha').style.display = 'block';
+                        }
+                    });
                 },
                 count() {
                     axios
