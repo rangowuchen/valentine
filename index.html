@@ -63,11 +63,11 @@
 
         <div class="page page4 hide">
             <div style="width: 100%;height:100%;" id="saveToImg">
-                <section v-if="isWinning==false" class="letter">
+                <section v-show="isWinning==false" class="letter">
                     <section>{{content}}</section>
                     <span>{{name}}</span>
                 </section>
-                <section v-if="isWinning==true" class="prize">
+                <section v-show="isWinning==true" class="prize">
                     <span class="prize-1">最小声的</span>
                     <span class="prize-2">想你</span>
                     <span class="prize-3">也会有人聆听</span>
@@ -85,10 +85,10 @@
                 <section id="qrcode"></section>
             </div>
             <img class="exchangeMind" @click="exchangeMind()" src="images/4-1.png" alt="">
-            <img class="againMind" v-if="isWinning==false" @click="againMind()" src="images/4-2.png" alt="">
-            <img class="applyPrize" v-if="isWinning==true" @click="applyPrize()" src="images/4-4.png" alt="">
+            <img class="againMind" v-show="isWinning==false" @click="againMind()" src="images/4-2.png" alt="">
+            <img class="applyPrize" v-show="isWinning==true" @click="applyPrize()" src="images/4-4.png" alt="">
             <img class="moreMind" @click="moreMind()" src="images/4-3.png" alt="">
-            <span class="longEnter" v-if="isWinning==false">长按保存 说给T A听</span>
+            <span class="longEnter" v-show="isWinning==false">长按保存 说给T A听</span>
             <img :src='imgSrc' id="haha" style="width: 100%;height:100%;position:absolute;top:0;left:0;display:none;"
                 alt="">
         </div>
@@ -108,7 +108,7 @@
     <script type="text/javascript" src="https://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
     <script type="text/javascript">
         // loading
-        var _LoadingHtml = '<div id="loadingDiv" style="position:fixed;left: 0;top: 0;right: 0;bottom: 0;z-index: 99999;"><img src="images/duck.png" width="100%" class="ld_bg"><div style="position: fixed;top: 50%;left: 50%;transform: translate(-50%,-50%);"><img src="images/loading.gif" style="vertical-align: middle;width: 100px;"></div></div>';
+        var _LoadingHtml = '<div id="loadingDiv" style="position:fixed;left: 0;top: 0;right: 0;bottom: 0;z-index: 99999;"><div style="position: fixed;top: 50%;left: 50%;transform: translate(-50%,-50%);"><img src="images/loading.gif" style="vertical-align: middle;width: 100px;"></div></div>';
         // 呈现loading效果
         document.write(_LoadingHtml);
         var html = document.getElementsByTagName('html')[0];
