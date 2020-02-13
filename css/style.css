@@ -1,0 +1,240 @@
+.page1 img{
+    width:100%;
+    height:100%;
+}
+.page2{
+    background: url('../images/2.png') no-repeat;
+    background-size: 100% 100%;
+    background-position: center center;
+    position: relative;
+}
+.page2 .ruleBtn{
+    width: 2.45rem;
+    height: 1.16rem;
+    position: absolute;
+    left: 1.08rem;
+    bottom: 1.26rem;
+}
+.page2 .pouroutBtn{
+    width: 2.74rem;
+    height: 3.04rem;
+    position: absolute;
+    right: 1.08rem;
+    bottom: 1.26rem;
+}
+.page3 .pageThree{
+    background: url('../images/3.jpg') no-repeat;
+    background-size: 100% 100%;
+    background-position: center center;
+    position: relative;
+    text-align: center;
+    padding-top: 7.5rem;
+}
+.page3 textarea{
+    outline: none;
+    border: none;
+    background: rgba(255, 255, 255, 0.1);
+    margin: 0 auto;
+    width: 7rem;
+    height: 4rem;
+    font-size: .46rem;
+    font-family: cursive;
+}
+.page3 .pageThree div{
+    position: absolute;
+    bottom: 27.5%;
+    left: 31%;
+    width: 3.98rem;
+    height: 1.64rem;
+}
+.page3 .pageThree .signature{
+    float: right;
+    margin-right: 2rem;
+    display: block;
+    outline: none;
+    border: none;
+    background: transparent;
+    width: 2.5rem;
+    border-bottom: 1px solid;
+
+}
+.page4 .exchangeMind{
+    position: absolute;
+    bottom: 4.8rem;
+    left: 3.4rem;
+    width: 3.54rem;
+    height: 2.35rem;
+}
+.page4 .againMind{
+    position: absolute;
+    bottom: 5rem;
+    left: 1rem;
+    width: 2.98rem;
+    height: 2.03rem;
+    display: none;
+}
+.page4 .moreMind{
+    position: absolute;
+    bottom: 5.6rem;
+    right: 0.8rem;
+    width: 3.3rem;
+    height: 1.3rem;
+    display: none;
+}
+.page4 .longEnter{
+    width: 0.4rem;
+    line-height: 0.5rem;
+    display: inline-block;
+    font-size: .4rem;
+    color: #fff;
+    position: absolute;
+    right: 0.2rem;
+    top: 2rem;
+    text-align: center;
+}
+.page4 .applyPrize{
+    position: absolute;
+    bottom: 5.6rem;
+    left: 1rem;
+    width: 3.14rem;
+    height: 1.24rem;
+}
+.page4 div{
+    background: url('../images/4.png') no-repeat;
+    background-size: 100% 100%;
+    background-position: center center;
+    position: relative;
+}
+.page4 div #qrcode img{
+    margin: 0 auto;
+}
+.page4 div .letter{
+    width: 8.5rem;
+    height: 9.8rem;
+    margin: 2rem auto 3.7rem auto;
+    padding: 1.5rem 0 0 .5rem;
+}
+.page4 div .letter section{
+    width: 5.8rem;
+    max-height: 7rem;
+    outline: none;
+    border: none;
+    font-family: cursive;
+    font-size: .56rem;
+    line-height: 0.7rem;
+}
+.page4 div .letter span{
+    display: block;
+    line-height: 1.2rem;
+    font-size: .56rem;font-family: cursive
+}
+.page4 div .prize{
+    width: 8.5rem;
+    height: 9.8rem;
+    margin: 2rem auto 3.7rem auto;
+    padding: 0.3rem 2.1rem 0 .5rem;
+    font-size: 0.3rem;
+}
+.page4 div .prize span{
+    display: block;
+}
+.page4 div .prize .prize-1{
+    font-size: 0.4rem;
+    line-height: 1rem;
+    font-weight: 500;
+}
+.page4 div .prize .prize-2{
+    font-size: 0.6rem;
+    line-height: 1rem;
+    font-weight: bold;
+}
+.page4 div .prize .prize-3{
+    font-size: 0.4rem;
+    line-height: 1rem;
+    font-weight: 500;
+}
+.page4 div .prize .prize-4{
+    font-size: 0.3rem;
+    line-height: .7rem;
+}
+.page4 div .prize .prize-5{
+    font-size: 0.4rem;
+    line-height: .6rem;
+    font-weight: bold;
+    margin-top: 0.8rem;
+}
+.page4 div .prize .prize-5 input{
+    outline: none;
+    border: 1px solid;
+    border-radius: 2px;
+    width: 3.4rem;
+}
+.page5 div .sendSuccessImg{
+    width: 100%;
+    height: 100%;
+}
+.page5 div .returnIndex{
+    width: 2.98rem;
+    height: 2.03rem;
+    position: absolute;
+    bottom: 4.9rem;
+    left: 1rem;
+}
+.page5 div .exchange{
+    width: 3.3rem;
+    height: 1.3rem;
+    position: absolute;
+    bottom: 5.5rem;
+    right: 1rem;
+}
+
+
+.modal{
+    padding: 10px;
+    width: 100%;
+	height: 100%;
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 999;
+    background: rgba(119,136,153, 0.8)
+}
+.modal .ruleImg{
+    width: 8.93rem;
+    height: 16.05rem;
+    margin: 2rem auto;
+    background: url('../images/2-3.png') no-repeat;
+    background-position: center;
+    background-size: 100%;
+    position: relative;
+}
+.modal .ruleImg img{
+    position: absolute;
+    top: -0.26rem;
+    right: -0.16rem;
+    width: .78rem;
+    height: .79rem;
+}
+.closeBtn{
+    float: right;
+    transform: rotate(90deg)
+}
+/* 音乐 */
+.pauseOrPlay {
+    width: 25px;
+    height: 25px;
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    z-index: 999;
+}
+
+.pauseOrPlay img {
+    width: 25px;
+    height: 25px;
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    z-index: 999;
+}

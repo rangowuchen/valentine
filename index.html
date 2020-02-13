@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=1080, user-scalable=no">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-title" content="">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>H5-test</title>
+    <link href="css/index.css" rel="stylesheet" />
+    <link href="css/style.css" rel="stylesheet" />
+    <script src="js/vue.js"></script>
+    <script src="js/axios.min.js"></script>
+    <script type="text/javascript" src="js/qrcode.min.js"></script>
+    <script type="text/javascript" src="js/html2canvas.min.js"></script>
+    <style>
+        .haha {
+            font-family: cursive;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="page_box" id="contain">
+        <audio style="display:none; height: 0" id="bg-music" preload="auto" src="images/1.mp3" loop="loop"></audio>
+        <div class="pauseOrPlay" @click="pauseMusic()">
+            <img src="images/pause.png" id="pause" alt="">
+            <img src="images/play.png" id="play" style="display: none" alt="">
+        </div>
+        <div class="page page1">
+            <img src="images/1.jpg" alt="" srcset="">
+            <div class="arrow" @click="nextBtn()">∧</div>
+        </div>
+        <div class="page page2 hide">
+            <div>
+                <img class="ruleBtn" @click='ruleBtn' src="images/2-2.png" alt="" srcset="">
+                <img class="pouroutBtn" src="images/2-1.png" @click="nextBtn()" alt="" srcset="">
+                <div class="modal">
+                    <div class="ruleImg">
+                        <img src="images/2-4.png" class="closeBtn" @click="closeBtn" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="page page3 hide">
+            <div style="width: 100%;height:100%;" class="pageThree">
+                <textarea v-model="content" name="" id="loveLetterArea" cols="36" rows="11" maxlength="100"
+                    placeholder="请输入"></textarea>
+                <input v-model="name" type="text" class="signature" placeholder="署名">
+                <div @click="nextBtn()"></div>
+            </div>
+        </div>
+
+        <div class="page page4 hide">
+            <div style="width: 100%;height:100%;" id="saveToImg">
+                <section v-if="isWinning==false" class="letter">
+                    <section>{{content}}</section>
+                    <span>{{name}}</span>
+                </section>
+                <section v-if="isWinning==true" class="prize">
+                    <span class="prize-1">最小声的</span>
+                    <span class="prize-2">想你</span>
+                    <span class="prize-3">也会有人聆听</span>
+                    <p class="prize-4">
+                        <span>我们听到你的心声了哦</span>
+                        <span>送你一张<strong>原舍300元代金券</strong></span>
+                        <span>提交信息申领吧</span>
+                        <span>中奖信息只有一次提交机会请认真检查哦~</span>
+                    </p>
+                    <section class="prize-5">
+                        <span>姓名 <input v-model='userName' type="text"></span>
+                        <span>电话 <input v-model='userPsw' type="text"></span>
+                    </section>
+                </section>
+                <section id="qrcode"></section>
+            </div>
+            <img class="exchangeMind" @click="exchangeMind()" src="images/4-1.png" alt="">
+            <img class="againMind" v-if="isWinning==false" @click="againMind()" src="images/4-2.png" alt="">
+            <img class="applyPrize" v-if="isWinning==true" @click="applyPrize()" src="images/4-4.png" alt="">
+            <img class="moreMind" @click="moreMind()" src="images/4-3.png" alt="">
+            <span class="longEnter" v-if="isWinning==false">长按保存 说给T A听</span>
+            <img :src='imgSrc' id="haha" style="width: 100%;height:100%;position:absolute;top:0;left:0;display:none;"
+                alt="">
+        </div>
+
+        <div class="page page5 hide">
+            <div style="width: 100%;height:100%">
+                <img class="sendSuccessImg" src="images/5.png" alt="">
+                <img class="returnIndex" @click="againMind" src="images/4-2.png" alt="">
+                <img class="exchange" @click="exchange" src="images/4-3.png" alt="">
+            </div>
+        </div>
+
+    </div>
+
+    <!-- <div class="arrow" @click="nextBtn()">∧</div> -->
+
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
+    <script type="text/javascript">
+        // loading
+        var _LoadingHtml = '<div id="loadingDiv" style="position:fixed;left: 0;top: 0;right: 0;bottom: 0;z-index: 99999;"><img src="images/duck.png" width="100%" class="ld_bg"><div style="position: fixed;top: 50%;left: 50%;transform: translate(-50%,-50%);"><img src="images/loading.gif" style="vertical-align: middle;width: 100px;"></div></div>';
+        // 呈现loading效果
+        document.write(_LoadingHtml);
+        var html = document.getElementsByTagName('html')[0];
+        console.log(html);
+        if (html) {
+            var w = window.innerWidth;
+            var fontSize = (w > 1080 ? 1080 : w) / 1080 * 100;
+            html.style.fontSize = fontSize + 'px';
+            /*已经适配来当前的设备*/
+        }
+        window.onload = function () {
+            var loadingMask = document.getElementById('loadingDiv');
+            loadingMask.parentNode.removeChild(loadingMask);
+
+            window.onresize = function () {
+                var w = window.innerWidth;
+                var fontSize = (w > 1080 ? 1080 : w) / 1080 * 100;
+                html.style.fontSize = fontSize + 'px';
+            }
+        }
+        $(document).ready(function () {
+            var hgt = $(window).height();
+            $('body').height(hgt + 'px')
+        })
+    </script>
+    <script type="text/javascript">
+        new Vue({
+            el: '#contain',
+            data: {
+                content: '',
+                name: '',
+                imgSrc: '',
+                isWinning: false,
+                userName: '',
+                userPsw: '',
+                countData: null,
+                curPage: 1,
+                PageL: $('.page_box .page').length,
+                canTouch: false,
+                canTouch: true,
+
+            },
+            // 加载方法
+            mounted() {
+                // this.saveImg();
+                this.autoPlayMusic();
+                this.audioAutoPlay();
+                this.qrcode();
+            },
+            methods: {
+                ruleBtn() {
+                    $(".modal").css('display', 'block');
+                },
+                closeBtn() {
+                    $(".modal").fadeOut('fast');
+                },
+                qrcode() {
+                    new QRCode(document.getElementById("qrcode"), {
+                        width: 76,
+                        height: 76,
+                        text: window.location.href
+                    });
+                },
+                // saveImg() {
+                //     let table = document.getElementById("saveToImg");
+                //     html2canvas(document.getElementById("saveToImg"), { useCORS: true }).then(canvas => {
+                //         this.imgSrc = canvas.toDataURL('image/png');
+                //         document.getElementById('haha').style.display = 'block';
+                //     })
+                // },
+                count() {
+                    axios
+                        .get('http://mp.xbandclub.com/spring/count')
+                        .then(res => {
+                            this.countData = res.data;
+                            setTimeout(() => {
+                                this.saveImg();
+                            }, 1000);
+                        })
+                        .catch(function (error) { // 请求失败处理
+                            console.log(error);
+                        });
+                },
+                // 呼唤心事
+                exchangeMind() {
+                    $('.exchangeMind').css('display', 'none');
+                    $('.againMind').css('display', 'block');
+                    $('.moreMind').css('display', 'block');
+                },
+                // 重写心事
+                againMind() {
+                    window.location.href = 'index.html'
+                },
+                // 再换一封,请求接口
+                moreMind() {
+                    // 后端给个标识,验证是否中将
+                    this.isWinning = true;
+                    if (this.isWinning == true) {
+
+                    }
+                },
+                // 申领房券
+                applyPrize() {
+                    // 接口请求
+                    this.nextBtn();
+                },
+                // 投递成功,再换一封(调取接口)
+                exchange() {
+                    this.curPage = 3;
+                    this.nextBtn();
+                },
+                nextBtn() {
+                    if (this.canTouch) {
+                        if (this.curPage >= this.PageL) {
+                            return;
+                        }
+                        $('.page' + this.curPage).removeClass('inTop outTop inDown outDown hide').addClass('outTop');
+                        this.curPage++;
+                        $('.page' + this.curPage).removeClass('inTop outTop inDown outDown hide').addClass('inTop');
+
+                        if (this.curPage >= this.PageL) {
+                            $('.arrow').hide();
+                        } else {
+                            $('.arrow').show();
+                        }
+                        if (this.curPage == 4) {
+                            let table = document.getElementById("saveToImg");
+                            html2canvas(document.getElementById("saveToImg")).then(canvas => {
+                                this.imgSrc = canvas.toDataURL('image/png');
+                                console.log(canvas.toDataURL('image/png'))
+                                document.getElementById('haha').style.display = 'block';
+                            })
+                        }
+                        this.canTouch = false;
+                        let that = this;
+                        setTimeout(function () {
+                            that.canTouch = true;
+                            $('.page' + (that.curPage - 1) + ', .page' + (that.curPage + 1)).addClass('hide');
+                        }, 1000);
+                    }
+                },
+                // 背景音乐
+                audioAutoPlay() {
+                    var audio = document.getElementById('bg-music');
+                    audio.play();
+                    document.addEventListener("WeixinJSBridgeReady", function () {
+                        audio.play();
+                    }, false);
+                },
+                // 音乐暂停
+                pauseMusic() {
+                    var play1 = document.getElementById('play');
+                    var pause1 = document.getElementById('pause');
+                    var audio = document.getElementById('bg-music');
+                    if (audio.paused) {
+                        audio.play();
+                        play1.style.display = 'block';
+                        pause1.style.display = 'none';
+
+                    } else {
+                        audio.pause();
+                        play1.style.display = 'none';
+                        pause1.style.display = 'block';
+                    }
+                },
+                // 音乐播放
+                autoPlayMusic() {
+                    let that = this;
+                    // 自动播放音乐效果，解决浏览器或者APP自动播放问题
+                    function musicInBrowserHandler() {
+                        that.musicPlay(true);
+                        document.body.removeEventListener('touchstart', musicInBrowserHandler);
+                    }
+                    document.body.addEventListener('touchstart', musicInBrowserHandler);
+                    // 自动播放音乐效果，解决微信自动播放问题
+                    function musicInWeixinHandler() {
+                        that.musicPlay(true);
+                        document.addEventListener("WeixinJSBridgeReady", function () {
+                            that.musicPlay(true);
+                        }, false);
+                        document.removeEventListener('DOMContentLoaded', musicInWeixinHandler);
+                    }
+                    document.addEventListener('DOMContentLoaded', musicInWeixinHandler);
+                },
+                musicPlay(isPlay) {
+                    var media = document.querySelector('#bg-music');
+                    if (isPlay && media.paused) {
+                        media.play();
+                    }
+                    if (!isPlay && !media.paused) {
+                        media.pause();
+                    }
+                }
+            },
+
+        })
+    </script>
+</body>
+
+</html>
