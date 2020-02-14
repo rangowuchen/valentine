@@ -39,6 +39,7 @@
         <div class="page page2 hide">
             <div>
                 <img class="ruleBtn" @click='ruleBtn' src="images/2-2.png" alt="" srcset="">
+                <img class="linkBtn" @click='ruleBtn' src="images/2-5.png" alt="" srcset="">
                 <img class="pouroutBtn" src="images/2-1.png" @click="nextBtn()" alt="" srcset="">
                 <div class="modal">
                     <div class="ruleImg">
@@ -52,18 +53,19 @@
             <div style="width: 100%;height:100%;" class="pageThree">
                 <textarea v-model="content" name="" id="loveLetterArea" cols="36" rows="11" maxlength="100"
                     placeholder="请输入"></textarea>
-                <input v-model="name" type="text" class="signature" placeholder="署名">
-                <div @click="nextBtn()"></div>
+                <input v-model="name" type="text" class="signature" placeholder="署名" maxlength="12">
+                <div @click="nextBtnToAdd()"></div>
             </div>
         </div>
 
         <div class="page page4 hide">
             <div style="width: 100%;height:100%;" id="saveToImg">
-                <section v-show="isWinning==false" class="letter">
-                    <section>{{content}}</section>
+                <section v-if="winning==false" class="letter">
+                    <section v-if="byMyself==false">{{content}}</section>
+                    <section v-if="byMyself==true"  v-html="content.replace(/[,，。]/g, '<br/>')"></section>
                     <span>{{name}}</span>
                 </section>
-                <section v-show="isWinning==true" class="prize">
+                <section v-if="winning==true" class="prize">
                     <span class="prize-1">最小声的</span>
                     <span class="prize-2">想你</span>
                     <span class="prize-3">也会有人聆听</span>
@@ -74,28 +76,35 @@
                         <span>中奖信息只有一次提交机会请认真检查哦~</span>
                     </p>
                     <section class="prize-5">
-                        <span>姓名 <input v-model='userName' type="text"></span>
-                        <span>电话 <input v-model='userPsw' type="text"></span>
+                        <span>姓名 <input v-model='userName' maxlength="12" type="text"></span>
+                        <span>电话 <input v-model='userPhone' type="text"></span>
                     </section>
                 </section>
                 <section id="qrcode"></section>
             </div>
-            <img class="exchangeMind" @click="exchangeMind()" src="images/4-1.png" alt="">
-            <img class="againMind" v-show="isWinning==false" @click="againMind()" src="images/4-2.png" alt="">
-            <img class="applyPrize" v-show="isWinning==true" @click="applyPrize()" src="images/4-4.png" alt="">
-            <img class="moreMind" @click="moreMind()" src="images/4-3.png" alt="">
-            <span class="longEnter" v-show="isWinning==false">长按保存 说给T A听</span>
-            <img :src='imgSrc' id="haha" style="width: 100%;height:100%;position:absolute;top:0;left:0;display:none;z-index: 30;"
-                alt="">
-        </div>
+            <section class="apiFalse" v-if="apiFalse">
+                <section>
+                    <span>{{apiMessage}}</span>
+                    <img @click="errorMsg" src="images/2-4.png" alt="">
+                </section>
 
-        <div class="page page5 hide">
-            <div style="width: 100%;height:100%">
-                <!-- <img class="sendSuccessImg" src="images/5.png" alt=""> -->
-                <img class="returnIndex" @click="againMind" src="images/4-2.png" alt="">
-                <img class="exchange" @click="exchange" src="images/4-3.png" alt="">
-            </div>
+            </section>
+            <img class="exchangeMind" @click="exchangeMind()" src="images/4-1.png" alt="">
+            <img class="againMind" v-if="winning==false" @click="againMind()" src="images/4-2.png" alt="">
+            <img class="applyPrize" v-if="winning==true" @click="applyPrize()" src="images/4-4.png" alt="">
+            <img class="moreMind" @click="moreMind()" src="images/4-3.png" alt="">
+            <span class="longEnter" v-if="winning==false">长按保存 说给T A听</span>
+            <img :src='imgSrc' id="haha"
+                style="width: 100%;height:100%;position:absolute;top:0;left:0;display:none;z-index: 30;" alt="">
+    </div>
+
+    <div class="page page5 hide">
+        <div style="width: 100%;height:100%">
+            <!-- <img class="sendSuccessImg" src="images/5.png" alt=""> -->
+            <img class="returnIndex" @click="againMind" src="images/4-2.png" alt="">
+            <img class="exchange" @click="exchange" src="images/4-3.png" alt="">
         </div>
+    </div>
 
     </div>
     <script src="js/vue.js"></script>
@@ -139,19 +148,21 @@
                 content: '',
                 name: '',
                 imgSrc: '',
-                isWinning: false,
+                winning: false,
                 userName: '',
-                userPsw: '',
+                userPhone: '',
                 countData: null,
                 curPage: 1,
                 PageL: $('.page_box .page').length,
                 canTouch: false,
                 canTouch: true,
+                apiFalse: false,
+                apiMessage: '',
+                byMyself:''
 
             },
             // 加载方法
             mounted() {
-                // this.count();
                 this.autoPlayMusic();
                 this.audioAutoPlay();
                 this.qrcode();
@@ -167,7 +178,7 @@
                     new QRCode(document.getElementById("qrcode"), {
                         width: 76,
                         height: 76,
-                        text: window.location.href
+                        text: 'http://mp.xbandclub.com/static/valentine/index.html'
                     });
                 },
                 saveImg() {
@@ -202,46 +213,105 @@
                         }
                     });
                 },
-                count() {
-                    axios
-                        .get('http://mp.xbandclub.com/spring/count')
-                        .then(res => {
-                            this.countData = res.data;
-                            setTimeout(() => {
-                                this.saveImg();
-                            }, 1000);
-                        })
-                        .catch(function (error) { // 请求失败处理
-                            console.log(error);
-                        });
-                },
                 // 呼唤心事
                 exchangeMind() {
                     $('.exchangeMind').css('display', 'none');
                     $('.againMind').css('display', 'block');
                     $('.moreMind').css('display', 'block');
+                    // 接口请求获取情书
+                    this.getLetterApi();
+
+
+                },
+                // 获取请书接口
+                getLetterApi() {
+                    axios
+                        .get('http://mp.xbandclub.com/valentine/sentence')
+                        .then(res => {
+                            console.log(res.data.data)
+                            let data = res.data.data;
+                            this.winning = data.winning;
+                            if (data.winning == false) {
+                                this.byMyself = data.byMyself;
+                                // if (data.byMyself == true) {
+                                //     var reg = /[,，]/g;
+                                //     this.content1 = data.content.replace(reg, " <br/> ");
+                                // } else {
+                                    this.content = data.content;
+                                // }
+                                this.name = data.writer;
+                                this.imgSrc = '';
+                                setTimeout(() => {
+                                    this.saveImg();
+                                }, 1000);
+                            } else {
+                                $('#haha').css('display', 'none');
+                            }
+
+                        })
+                        .catch(function (error) { // 请求失败处理
+                            console.log(error);
+                        });
                 },
                 // 重写心事
                 againMind() {
-                    window.location.href = 'index.html'
+                    window.location.href = 'http://mp.xbandclub.com/static/valentine/index.html'
                 },
                 // 再换一封,请求接口
                 moreMind() {
                     // 后端给个标识,验证是否中将
-                    this.isWinning = true;
-                    if (this.isWinning == true) {
+                    this.getLetterApi();
 
-                    }
                 },
                 // 申领房券
                 applyPrize() {
                     // 接口请求
-                    this.nextBtn();
+                    let data = {
+                        name: this.userName,
+                        phone: this.userPhone
+                    }
+                    axios
+                        .post('http://mp.xbandclub.com/valentine/winner', data)
+                        .then(res => {
+                            console.log('1', res.data.code)
+                            if (res.data.code != 200) {
+                                this.apiFalse = true;
+                                this.apiMessage = res.data.msg;
+                                return;
+                            } else {
+                                this.nextBtn();
+                            }
+                            console.log('申领房券', res);
+
+                        })
+                        .catch(function (error) { // 请求失败处理
+                            console.log('2', error);
+                        });
                 },
                 // 投递成功,再换一封(调取接口)
                 exchange() {
                     this.curPage = 3;
+                    this.getLetterApi();
                     this.nextBtn();
+                    // 接口请求获取情书
+                    // this.moreMind();
+
+                },
+                // 递给树洞(新增请书)
+                nextBtnToAdd() {
+                    let data = {
+                        writer: this.name,
+                        content: this.content
+                    }
+                    axios
+                        .post('http://mp.xbandclub.com/valentine/sentence', data)
+                        .then(res => {
+                            console.log('新增情书', res);
+                            this.nextBtn();
+                        })
+                        .catch(function (error) { // 请求失败处理
+                            console.log(error);
+                        });
                 },
                 nextBtn() {
                     if (this.canTouch) {
@@ -273,9 +343,14 @@
                             //     })
                             //     alert(11)
                             // }, 5000);
-                            this.count();
+                            setTimeout(() => {
+                                this.saveImg();
+                            }, 1000);
                         }
                     }
+                },
+                errorMsg(){
+                    this.apiFalse = false;
                 },
                 // 背景音乐
                 audioAutoPlay() {

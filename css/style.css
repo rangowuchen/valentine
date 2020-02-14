@@ -12,6 +12,13 @@
     width: 2.45rem;
     height: 1.16rem;
     position: absolute;
+    left: 1.3rem;
+    bottom: 1.94rem;
+}
+.page2 .linkBtn{
+    width: 4.45rem;
+    height: .57rem;
+    position: absolute;
     left: 1.08rem;
     bottom: 1.26rem;
 }
@@ -20,10 +27,10 @@
     height: 3.04rem;
     position: absolute;
     right: 1.08rem;
-    bottom: 1.26rem;
+    bottom: 1.2rem;
 }
 .page3 .pageThree{
-    background: url('../images/3.jpg') no-repeat;
+    background: url('../images/3.png') no-repeat;
     background-size: 100% 100%;
     background-position: center center;
     position: relative;
@@ -37,7 +44,7 @@
     margin: 0 auto;
     width: 7rem;
     height: 4rem;
-    font-size: .46rem;
+    font-size: .44rem;
     font-family: cursive;
 }
 .page3 .pageThree div{
@@ -110,8 +117,10 @@
     background-position: center center;
     position: relative;
 }
-.page4 div #qrcode img{
+.page4 div #qrcode{
     margin: 0 auto;
+    width: 76px;
+    height: 76px;
 }
 .page4 div .letter{
     width: 8.5rem;
@@ -173,6 +182,35 @@
     border: 1px solid;
     border-radius: 2px;
     width: 3.4rem;
+}
+/* 提示 */
+.page4 .apiFalse{
+    background: rgba(119,136,153, 0.8);
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: 9999;
+}
+.page4 .apiFalse section{
+    background: #fff;
+    width: 9rem;
+    height: 3rem;
+    margin: 5rem auto;
+    position: relative;
+    font-size: .6rem;
+    text-align: center;
+    line-height: 3rem;
+    border-radius: 5px;
+}
+.page4 .apiFalse img{
+    width: 0.79rem;
+    height: 0.79rem;
+    position: absolute;
+    top: -.2rem;
+    right: -.2rem;
+}
+.page4 .apiFalse span{
+   
 }
 .page5 div{
     background: url('../images/5.png') no-repeat;
