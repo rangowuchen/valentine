@@ -14,7 +14,7 @@
     <meta name="apple-mobile-web-app-title" content="">
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>H5-test</title>
+    <title>想见你树洞</title>
     <link href="css/index.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet" />
     <style>
@@ -62,7 +62,7 @@
             <div style="width: 100%;height:100%;" id="saveToImg">
                 <section v-if="winning==false" class="letter">
                     <section v-if="byMyself==false">{{content}}</section>
-                    <section v-if="byMyself==true"  v-html="content.replace(/[,，。]/g, '<br/>')"></section>
+                    <section v-if="byMyself==true" v-html="content.replace(/[,，。;；，。]/g, '<br/>')"></section>
                     <span>{{name}}</span>
                 </section>
                 <section v-if="winning==true" class="prize">
@@ -94,17 +94,20 @@
             <img class="applyPrize" v-if="winning==true" @click="applyPrize()" src="images/4-4.png" alt="">
             <img class="moreMind" @click="moreMind()" src="images/4-3.png" alt="">
             <span class="longEnter" v-if="winning==false">长按保存 说给T A听</span>
-            <img :src='imgSrc' id="haha"
-                style="width: 100%;height:100%;position:absolute;top:0;left:0;display:none;z-index: 30;" alt="">
-    </div>
-
-    <div class="page page5 hide">
-        <div style="width: 100%;height:100%">
-            <!-- <img class="sendSuccessImg" src="images/5.png" alt=""> -->
-            <img class="returnIndex" @click="againMind" src="images/4-2.png" alt="">
-            <img class="exchange" @click="exchange" src="images/4-3.png" alt="">
+            <div id="haha" style="width: 100%;height:100%;position:absolute;top:0;left:0;display:none;z-index: 30;">
+                
+            </div>
+            <!-- <img :src='imgSrc' id="haha"
+                style="width: 100%;height:100%;position:absolute;top:0;left:0;display:none;z-index: 30;" alt=""> -->
         </div>
-    </div>
+
+        <div class="page page5 hide">
+            <div style="width: 100%;height:100%">
+                <!-- <img class="sendSuccessImg" src="images/5.png" alt=""> -->
+                <img class="returnIndex" @click="againMind" src="images/4-2.png" alt="">
+                <img class="exchange" @click="exchange" src="images/4-3.png" alt="">
+            </div>
+        </div>
 
     </div>
     <script src="js/vue.js"></script>
@@ -158,7 +161,7 @@
                 canTouch: true,
                 apiFalse: false,
                 apiMessage: '',
-                byMyself:''
+                byMyself: ''
 
             },
             // 加载方法
@@ -200,15 +203,27 @@
                     //     this.imgSrc = canvas.toDataURL('image/png');
                     //     document.getElementById('haha').style.display = 'block';
                     // })
+                    const w = $('#saveToImg').outerWidth(),
+                        h = $('#saveToImg').outerHeight();
                     html2canvas(table, {
-                        // 页面高度  
-                        height: 1000,
-                        // 页面宽度
-                        width: 400,
+                        // // 页面高度  
+                        // height: 1000,
+                        // // 页面宽度
+                        // width: 400,
+                        allowTaint: true,
+                        taintTest: false,
+                        width: w,
+                        height: h,
+                        dpi: window.devicePixelRatio,
                         onrendered: function (canvas) {
                             // 生成图片的地址
-                            that.imgSrc = canvas.toDataURL('image/png');
-                            console.log(canvas.toDataURL('image/png'))
+                            // that.imgSrc = canvas.toDataURL('image/png');
+                            // console.log(canvas.toDataURL('image/png'))
+                            var dataUrl = canvas.toDataURL("image/png", 1.0),
+                                newImg = document.createElement("img");
+                            newImg.src = dataUrl;
+                            $('#haha').empty().append(newImg);
+                            newImg.style.width = '100%';
                             document.getElementById('haha').style.display = 'block';
                         }
                     });
@@ -237,7 +252,7 @@
                                 //     var reg = /[,，]/g;
                                 //     this.content1 = data.content.replace(reg, " <br/> ");
                                 // } else {
-                                    this.content = data.content;
+                                this.content = data.content;
                                 // }
                                 this.name = data.writer;
                                 this.imgSrc = '';
@@ -349,7 +364,7 @@
                         }
                     }
                 },
-                errorMsg(){
+                errorMsg() {
                     this.apiFalse = false;
                 },
                 // 背景音乐
